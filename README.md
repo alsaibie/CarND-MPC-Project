@@ -1,6 +1,40 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
+## Introduction
+
+In this final project of term 2, we use Model Predictive Control to drive a car in a simulator. The simulator feeds the
+controller x and y vectors of waypoints, and the controller's task is to approximate the trajectory based on these
+waypoints and using a more robust model of the vehicle compute the actuator output commands. The output of the
+controller are steer angle and throttle.
+
+The project uses IPOPT and CppAD to curve fit to the waypoints with minimum cost as designed. The solution submitted
+here uses a third order polynomial instead of the first order polynomial provided in the module, to perform the curve
+fitting. This produces a much smoother result. Higher degrees don't introduce much higher accuracy.
+
+## The Model
+*Student describes their model in detail. This includes the state, actuators and update equations.*
+
+Below is are the model equation used in this exercise, they are as provided by the course module.
+![eq](./img/EQ_MODEL.png)
+
+## Timestep Length and Elapsed Duration (N & dt)
+* Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.*
+
+By trial and error the values reached for N and dt are 11 and 0.1 respectively giving a T of 1.1 seconds, within the
+expected bounds. This combination resulted in a a smooth approximation of the trajectory. Higher and lower values were also tested, such as N = 20, 30, 40 but with no positive results. The sample time was chosen as 0.1s to account for latency computations
+
+## Polynomial Fitting and MPC Preprocessing
+* A polynomial is fitted to waypoints. *
+A third order polynomial was used to fit the trajectory to the waypoints. The waypoints are first transformed into the
+vehicles frame of reference.
+
+## Model Predictive Control with Latency
+* The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency. *
+
+Since the latency is 100ms, and the sample time is also set at 100ms, when computing the actuator outputs, we simply
+send the previous value (the 100ms older one) instead. This is a straight forward way to account for latency.
+
 ---
 
 ## Dependencies
